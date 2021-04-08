@@ -1,5 +1,5 @@
 # ticTacToe
-처음으로 만들어본 프로그램입니다. 자랑하고 싶어서 부랴부랴 github배운 후 올려봅니다.   
+처음으로 만들어본 프로그램입니다. 뿌듯해서 기념하고 싶어 부랴부랴 github배운 후 올려봅니다.   
 위의 틱택토 파일은 [goorm.io](https://www.goorm.io/)에서 진행하는 코딩파티중 [도전 틱택토!!!](https://codingparty.goorm.io/tic-tac-toe) 수강 후 강의를 되새기며 만들어 본 틱택토입니다.   
 ## 파일 설명
 ### ticTacToeFail.py
