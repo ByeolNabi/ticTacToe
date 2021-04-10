@@ -1,4 +1,4 @@
-#ticTacToeV2.py
+#ticTacToe1.py
 
 #TTT 설명
 print("TicTacToe게임을 소개합니다.")

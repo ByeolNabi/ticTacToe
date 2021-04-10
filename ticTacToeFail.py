@@ -1,4 +1,4 @@
-#ticTacToe.py
+#ticTacToeFail.py
 
 #변수 관리가 너무 어려워...
 
