@@ -1,4 +1,5 @@
 #ticTacToe1.py
+import random
 
 #TTT 설명
 print("TicTacToe게임을 소개합니다.")
@@ -10,6 +11,7 @@ print("|", 4, 5, 6, "|")
 print("|", 1, 2, 3, "|")
 print("---------")
 
+#게임 방식 선택
 print("게임 방식를 선택해주세요(1/2)")
 print("(1) vs 컴퓨터 (2) 친구와 함께 2인")
 modeData = input()
@@ -21,9 +23,9 @@ else:
         print("(1) vs 컴퓨터 (2) 친구와 함께 2인")
         modeData = input()
     gameMode = int(modeData)
+
 '''
 게임 모드 선택하기
-o는 사람이 x는 ai
 1. 일단 차례대로 말을 두는 ai
 2. o가 이길 수 있는 자리가 있다면 그곳에 두는 ai
 3. 자신이 이길 수 있다면 그곳에 두는 ai
@@ -32,14 +34,47 @@ ai 모드와 2인 모드는 코드를 분기시켜버리자.
 '''
 ####1인 플레이####
 if gameMode == 1 :
+    #
     print("\n컴퓨터와 ", end = '')
-    #TTT반복 트리거 0:반복 1:끝
+    #TTT반복 트리거 F:반복 T:끝
     endGame = False 
     #전적 기록 생성(list)
     matchHistory = []
 
     #TTT시작
     while endGame == False:
+        #공격 순서 뽑기
+        while True:
+            print("(1)선공 (2)후공 (3)랜덤")
+            firstAttack = input()
+
+            if firstAttack == '1':
+                gameTurn = 'user'
+                userStone = 'o'
+                comStone = 'x'
+                break
+
+            elif firstAttack == '2':
+                gameTurn = 'com'
+                comStone = 'o'
+                userStone = 'x'
+                break
+    
+            elif firstAttack == '3':
+                whoNext = ['com', 'user']
+                gameTurn = random.choice(whoNext)
+                
+                if gameTurn == 'com':
+                    comStone = 'o'
+                    userStone = 'x'
+                    break
+
+                elif gameTurn == 'user':
+                    userStone = 'o'
+                    comStone = 'x'
+                    break
+            print("숫자를 입력해주세요")
+        
         print("게임을 시작합니다.")
         #승자 선별
         winner = False
@@ -141,6 +176,11 @@ if gameMode == 1 :
                 stone = 'x'
             else:
                 stone = 'o'
+            
+            for i in range(1, 10):
+                if board[i] == '-':
+                    board[i] = stone
+                    break
 
 ####2인 플레이####
 if gameMode == 2:
@@ -149,7 +189,7 @@ if gameMode == 2:
     endGame = False 
     #전적 기록 생성(list)
     matchHistory = []
-
+    
     #TTT시작
     while endGame == False:
         print("게임을 시작합니다.")
@@ -247,16 +287,12 @@ if gameMode == 2:
                     break
                 else:
                     print("\ny 또는 n을 입력해주세요.")
-        
+            
             #돌 변경(x=o, o=x)
             if stone == 'o':
                 stone = 'x'
             else:
                 stone = 'o'
-
-'''
-vs 컴퓨터 만들기
-'''
 
 '''
 승리 조건 검사하는 도중에 승리가 확정되면 축하 멘트를 넣어야했다.
