@@ -34,7 +34,7 @@ ai 모드와 2인 모드는 코드를 분기시켜버리자.
 '''
 ####1인 플레이####
 if gameMode == 1 :
-    #
+    
     print("\n컴퓨터와 ", end = '')
     #TTT반복 트리거 F:반복 T:끝
     endGame = False 
@@ -43,38 +43,6 @@ if gameMode == 1 :
 
     #TTT시작
     while endGame == False:
-        #공격 순서 뽑기
-        while True:
-            print("(1)선공 (2)후공 (3)랜덤")
-            firstAttack = input()
-
-            if firstAttack == '1':
-                gameTurn = 'user'
-                userStone = 'o'
-                comStone = 'x'
-                break
-
-            elif firstAttack == '2':
-                gameTurn = 'com'
-                comStone = 'o'
-                userStone = 'x'
-                break
-    
-            elif firstAttack == '3':
-                whoNext = ['com', 'user']
-                gameTurn = random.choice(whoNext)
-                
-                if gameTurn == 'com':
-                    comStone = 'o'
-                    userStone = 'x'
-                    break
-
-                elif gameTurn == 'user':
-                    userStone = 'o'
-                    comStone = 'x'
-                    break
-            print("숫자를 입력해주세요")
-        
         print("게임을 시작합니다.")
         #승자 선별
         winner = False
@@ -90,28 +58,75 @@ if gameMode == 1 :
         print("|", board[4], board[5], board[6], "|")
         print("|", board[1], board[2], board[3], "|")
         print("---------")
+
+        ##def##공격 순서 뽑기
+        while True:
+            print("(1)선공 (2)후공 (3)랜덤")
+            firstAttack = input()
+            print("")
+
+            if firstAttack == '1':
+                gameTurn = 'user'
+                userStone = 'o'
+                comStone = 'x'
+                print("선공으로 시작합니다")
+                break
+
+            elif firstAttack == '2':
+                gameTurn = 'com'
+                comStone = 'o'
+                userStone = 'x'
+                print("후공으로 시작합니다.")
+                break
+    
+            elif firstAttack == '3':
+                whoNext = ['com', 'user']
+                gameTurn = random.choice(whoNext)
+                
+                if gameTurn == 'com':
+                    comStone = 'o'
+                    userStone = 'x'
+                    print("후공입니다.")
+                    break
+
+                elif gameTurn == 'user':
+                    userStone = 'o'
+                    comStone = 'x'
+                    print("선공입니다.")
+                    break
+            else:
+                print("숫자를 입력해주세요")
         
         #돌 나두기(게임 끝날 때까지)
         while winner == False:
-            #   돌 나두기 안내
-            print("원하는 위치에 돌을 나둬주세요")
-            #   돌 위치 입력 데이터 선별
-            while True:
-                inData = input()
-                #   입력 데이터 타입 선별
-                while not len(inData) == 1 or not "1" <= inData <= "9":
-                    print("한 자릿수 숫자를 입력해주세요")
+            #   유저가 공격일때
+            if gameTurn == 'user':
+                #   돌 나두기 안내
+                print("원하는 위치에 돌을 나둬주세요")
+                #   돌 위치 입력 데이터 선별
+                while True:
                     inData = input()
-                #   정수로 변환
-                LoS = int(inData)
-                #   중복 배치 판단
-                if board[LoS] == '-':
-                    break
-                else:
-                    print("빈 자리에 배치해주세요")
-            #   돌 배치
-            board[LoS] = stone
-            #   현재상황
+                    #   입력 데이터 타입 선별
+                    while not len(inData) == 1 or not "1" <= inData <= "9":
+                        print("한 자릿수 숫자를 입력해주세요")
+                        inData = input()
+                    #   정수로 변환
+                    LoS = int(inData)
+                    #   중복 배치 판단
+                    if board[LoS] == '-':
+                        break
+                    else:
+                        print("빈 자리에 배치해주세요")
+                #   돌 배치
+                board[LoS] = stone
+            #   컴퓨터가 공격일때
+            if gameTurn == 'com':
+                for i in range(1, 10):
+                    if board[i] == '-':
+                        board[i] = stone
+                        break
+
+            #   상황판
                 ##def## stoneChart()
             print("\n---------")
             print("|", board[7], board[8], board[9], "|")
@@ -136,12 +151,16 @@ if gameMode == 1 :
         
             ##def## 승자 등장 후 결과 저장 및 출력
             if winner == True:
-                print("%s님의 승리." %stone)
-                matchHistory.append(stone)
-                oWin = matchHistory.count('o')
-                xWin = matchHistory.count('x')
+                if comStone == stone:
+                    print("%s의 승리." % "컴퓨터")
+                    matchHistory.append('com')
+                elif userStone == stone:
+                    print("%s님의 승리." % "플레이어")
+                    matchHistory.append('user')
+                comWin = matchHistory.count('com')
+                userWin = matchHistory.count('user')
                 draw = matchHistory.count('-')
-                print("o:%s승, x:%s승, 무승부:%s회" % (oWin, xWin, draw))
+                print("플레이어:%s승, 컴퓨터:%s승, 무승부:%s회" % (userWin, comWin, draw))
         
             #돌의 개수 세기
             numOfStone += 1
@@ -151,14 +170,13 @@ if gameMode == 1 :
                 ##def## 무승부 저장 후 결과 출력
                 print("비겼습니다.")
                 matchHistory.append('-')
-                oWin = matchHistory.count('o')
-                xWin = matchHistory.count('x')
+                comWin = matchHistory.count('com')
+                userWin = matchHistory.count('user')
                 draw = matchHistory.count('-')
-                print("o:%s승, x:%s승, 무승부:%s회"  % (oWin, xWin, draw))
+                print("플레이어:%s승, 컴퓨터:%s승, 무승부:%s회" % (userWin, comWin, draw))
                 winner = True #승자가 있는건 아니지만 일단 게임은 끝내야지...
-                break
         
-        ##def## reGame?
+            ##def## reGame?
             while winner == True:
                 print("한 번 더 하시겠습니까?(y/n)")
                 reGame = input()
@@ -176,11 +194,11 @@ if gameMode == 1 :
                 stone = 'x'
             else:
                 stone = 'o'
-            
-            for i in range(1, 10):
-                if board[i] == '-':
-                    board[i] = stone
-                    break
+
+            if gameTurn == 'com':
+                gameTurn = 'user'
+            else:
+                gameTurn = 'com'
 
 ####2인 플레이####
 if gameMode == 2:
@@ -302,3 +320,7 @@ if gameMode == 2:
 그렇게 해서 쓸때없는 반복멘트를 없앨 수 있었다.
 ~안의 ~안의 함수 같은 끝도없이 중첩되려는 함수형태에 써먹으면 좋을 것 같다는 생각을 했다.
 '''
+
+# 선공 후 내가 돌을 놓으면 그 다음 컴퓨터가 혼자서 폭주함
+# 후공하면 컴퓨터 혼자 폭주 후 게임 끝
+## 대소문자 구분 잘하기
