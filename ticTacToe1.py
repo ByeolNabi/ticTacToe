@@ -25,12 +25,14 @@ else:
     gameMode = int(modeData)
 
 '''
-게임 모드 선택하기
-1. 일단 차례대로 말을 두는 ai
 2. o가 이길 수 있는 자리가 있다면 그곳에 두는 ai
 3. 자신이 이길 수 있다면 그곳에 두는 ai
-
-ai 모드와 2인 모드는 코드를 분기시켜버리자.
+복사된 보드를 만들고 거기에 1부터 9까지 돌을 나두는것을 반복
+반복할 때마다 승리하는지 판단하기
+만약 승리하면 그곳에 두기
+승리할 수 없을때 상대방 돌로 1부터 9까지 돌 나두기 반복
+만약 상대방이 승리한다면 그곳에 내 돌을 두기
+어느곳에도 해당되지 않는다면... 랜덤?
 '''
 ####1인 플레이####
 if gameMode == 1 :
@@ -121,20 +123,78 @@ if gameMode == 1 :
                 board[LoS] = stone
             #   컴퓨터가 공격일때
             if gameTurn == 'com':
+                #   승리가능 돌 나두기 ai(내가 승리 할 수 있는 곳)
                 for i in range(1, 10):
                     if board[i] == '-':
-                        board[i] = stone
-                        break
+                        copyBoard = board[:]
+                        copyBoard[i] = stone
+                        ##def## whoWin?(copyBoard)
+                        for i in [1, 4, 7]:
+                            if copyBoard[i] == stone and copyBoard[i+1] == stone and copyBoard[i+2] == stone:
+                                winner = True #승자 등장!
+                                
+                        for i in [1, 2, 3]:
+                            if copyBoard[i] == stone and copyBoard[i+3] == stone and copyBoard[i+6] == stone:
+                                winner = True
+                    
+                        if copyBoard[1] == stone and copyBoard[5] == stone and copyBoard[9] == stone:
+                            winner = True
+                    
+                        if copyBoard[7] == stone and copyBoard[5] == stone and copyBoard[3] == stone:
+                            winner = True
 
+                        if winner == True:
+                            board[i] = stone  
+                            break 
+                    continue
+                #   방어가능 돌 나두기 ai(상대방이 승리 할 수 있는 곳)
+                for i in range (1, 10):
+                    if board[i] == '-':
+                        copyStone = stone
+                        if copyStone == 'o':
+                            copyStone = 'x'
+                        else:
+                            copyStone = 'o'
+                        copyBoard = board[:]
+                        copyBoard[i] = copyStone
+                        ##def## whowin?(copyStone, copyBoard)
+                        for i in [1, 4, 7]:
+                            if copyBoard[i] == copyStone and copyBoard[i+1] == copyStone and copyBoard[i+2] == copyStone:
+                                winner = True #승자 등장!
+                                
+                        for i in [1, 2, 3]:
+                            if copyBoard[i] == copyStone and copyBoard[i+3] == copyStone and copyBoard[i+6] == copyStone:
+                                winner = True
+
+                        if copyBoard[1] == copyStone and copyBoard[5] == copyStone and copyBoard[9] == copyStone:
+                            winner = True
+
+                        if copyBoard[7] == copyStone and copyBoard[5] == copyStone and copyBoard[3] == copyStone:
+                            winner = True
+                        
+                        if winner == True:
+                            board[i] = stone
+                            break
+                    continue
+                #   누군가 승리할 상황이 아닐때 랜덤으로 돌 두기
+                if winner == False:
+                    randomNum = list(range(1,10))
+                    random.shuffle(randomNum)
+                    for i in randomNum:
+                        if board[i] == '-':
+                            board[i] = stone
+                            break
+                        continue
+                winner = False
             #   상황판
-                ##def## stoneChart()
+            ##def## stoneChart()
             print("\n---------")
             print("|", board[7], board[8], board[9], "|")
             print("|", board[4], board[5], board[6], "|")
             print("|", board[1], board[2], board[3], "|")
             print("---------")
         
-            #승리 조건 검사 / 승리시 게임 끝
+            ##def##승리 조건 검사
             for i in [1, 4, 7]:
                 if board[i] == stone and board[i+1] == stone and board[i+2] == stone:
                     winner = True #승자 등장!
@@ -144,10 +204,10 @@ if gameMode == 1 :
                     winner = True
         
             if board[1] == stone and board[5] == stone and board[9] == stone:
-                    winner = True
+                winner = True
         
             if board[7] == stone and board[5] == stone and board[3] == stone:
-                    winner = True
+                winner = True
         
             ##def## 승자 등장 후 결과 저장 및 출력
             if winner == True:
