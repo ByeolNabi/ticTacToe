@@ -24,16 +24,6 @@ else:
         modeData = input()
     gameMode = int(modeData)
 
-'''
-2. o가 이길 수 있는 자리가 있다면 그곳에 두는 ai
-3. 자신이 이길 수 있다면 그곳에 두는 ai
-복사된 보드를 만들고 거기에 1부터 9까지 돌을 나두는것을 반복
-반복할 때마다 승리하는지 판단하기
-만약 승리하면 그곳에 두기
-승리할 수 없을때 상대방 돌로 1부터 9까지 돌 나두기 반복
-만약 상대방이 승리한다면 그곳에 내 돌을 두기
-어느곳에도 해당되지 않는다면... 랜덤?
-'''
 ####1인 플레이####
 if gameMode == 1 :
     
@@ -71,14 +61,14 @@ if gameMode == 1 :
                 gameTurn = 'user'
                 userStone = 'o'
                 comStone = 'x'
-                print("선공으로 시작합니다")
+                print("선공(o)으로 시작합니다")
                 break
 
             elif firstAttack == '2':
                 gameTurn = 'com'
                 comStone = 'o'
                 userStone = 'x'
-                print("후공으로 시작합니다.")
+                print("후공(x)으로 시작합니다.")
                 break
     
             elif firstAttack == '3':
@@ -88,13 +78,13 @@ if gameMode == 1 :
                 if gameTurn == 'com':
                     comStone = 'o'
                     userStone = 'x'
-                    print("후공입니다.")
+                    print("후공(x)입니다.")
                     break
 
                 elif gameTurn == 'user':
                     userStone = 'o'
                     comStone = 'x'
-                    print("선공입니다.")
+                    print("선공(o)입니다.")
                     break
             else:
                 print("숫자를 입력해주세요")
@@ -124,19 +114,19 @@ if gameMode == 1 :
             #   컴퓨터가 공격일때
             if gameTurn == 'com':
                 #   승리가능 돌 나두기 ai(내가 승리 할 수 있는 곳)
-                for i in range(1, 10):
-                    if board[i] == '-':
+                for j in range(1, 10):
+                    if board[j] == '-':
                         copyBoard = board[:]
-                        copyBoard[i] = stone
+                        copyBoard[j] = stone
                         ##def## whoWin?(copyBoard)
                         for i in [1, 4, 7]:
                             if copyBoard[i] == stone and copyBoard[i+1] == stone and copyBoard[i+2] == stone:
                                 winner = True #승자 등장!
-                                
+
                         for i in [1, 2, 3]:
                             if copyBoard[i] == stone and copyBoard[i+3] == stone and copyBoard[i+6] == stone:
                                 winner = True
-                    
+
                         if copyBoard[1] == stone and copyBoard[5] == stone and copyBoard[9] == stone:
                             winner = True
                     
@@ -144,38 +134,39 @@ if gameMode == 1 :
                             winner = True
 
                         if winner == True:
-                            board[i] = stone  
+                            board[j] = stone  
                             break 
                     continue
                 #   방어가능 돌 나두기 ai(상대방이 승리 할 수 있는 곳)
-                for i in range (1, 10):
-                    if board[i] == '-':
-                        copyStone = stone
-                        if copyStone == 'o':
-                            copyStone = 'x'
-                        else:
-                            copyStone = 'o'
-                        copyBoard = board[:]
-                        copyBoard[i] = copyStone
-                        ##def## whowin?(copyStone, copyBoard)
-                        for i in [1, 4, 7]:
-                            if copyBoard[i] == copyStone and copyBoard[i+1] == copyStone and copyBoard[i+2] == copyStone:
-                                winner = True #승자 등장!
-                                
-                        for i in [1, 2, 3]:
-                            if copyBoard[i] == copyStone and copyBoard[i+3] == copyStone and copyBoard[i+6] == copyStone:
+                if winner == False:
+                    for j in range (1, 10):
+                        if board[j] == '-':
+                            copyStone = stone
+                            if copyStone == 'o':
+                                copyStone = 'x'
+                            else:
+                                copyStone = 'o'
+                            copyBoard = board[:]
+                            copyBoard[j] = copyStone
+                            ##def## whowin?(copyStone, copyBoard)
+                            for i in [1, 4, 7]:
+                                if copyBoard[i] == copyStone and copyBoard[i+1] == copyStone and copyBoard[i+2] == copyStone:
+                                    winner = True #승자 등장!
+                                    
+                            for i in [1, 2, 3]:
+                                if copyBoard[i] == copyStone and copyBoard[i+3] == copyStone and copyBoard[i+6] == copyStone:
+                                    winner = True
+
+                            if copyBoard[1] == copyStone and copyBoard[5] == copyStone and copyBoard[9] == copyStone:
                                 winner = True
 
-                        if copyBoard[1] == copyStone and copyBoard[5] == copyStone and copyBoard[9] == copyStone:
-                            winner = True
-
-                        if copyBoard[7] == copyStone and copyBoard[5] == copyStone and copyBoard[3] == copyStone:
-                            winner = True
-                        
-                        if winner == True:
-                            board[i] = stone
-                            break
-                    continue
+                            if copyBoard[7] == copyStone and copyBoard[5] == copyStone and copyBoard[3] == copyStone:
+                                winner = True
+                            
+                            if winner == True:
+                                board[j] = stone
+                                break
+                        continue
                 #   누군가 승리할 상황이 아닐때 랜덤으로 돌 두기
                 if winner == False:
                     randomNum = list(range(1,10))
@@ -353,7 +344,7 @@ if gameMode == 2:
                 winner = True #승자가 있는건 아니지만 일단 게임은 끝내야지...
                 break
         
-        ##def## reGame?
+            ##def## reGame?
             while winner == True:
                 print("한 번 더 하시겠습니까?(y/n)")
                 reGame = input()
@@ -380,7 +371,16 @@ if gameMode == 2:
 그렇게 해서 쓸때없는 반복멘트를 없앨 수 있었다.
 ~안의 ~안의 함수 같은 끝도없이 중첩되려는 함수형태에 써먹으면 좋을 것 같다는 생각을 했다.
 '''
-
-# 선공 후 내가 돌을 놓으면 그 다음 컴퓨터가 혼자서 폭주함
-# 후공하면 컴퓨터 혼자 폭주 후 게임 끝
-## 대소문자 구분 잘하기
+'''
+컴퓨터 돌 나두기 ai 문제
+막아야 하는곳은 안 막고 두번째 돌때 무조건 3번에 둔다.
+어느정도 하다보면 그냥 돌을 나두지 않고도 턴이 지나간다.
+o를 처음 3에 두면 두번째 x를 그냥 3에 덮어 씌운다.
+3번에 x를 두면 그 다음부터 아무 행동을 하지 않는다.
+컴퓨터가 선공일때에는 끝까지 가다보면 2턴이 남았는데 게임이 끝났다고 나온다.
+'''
+#for i in 문법에서 i라는 변수에 대해 자세히 알지 못해서 일어난 버그
+'''
+컴퓨터가 승리할 수 있을때 돌을 두번 놓음
+'''
+#
